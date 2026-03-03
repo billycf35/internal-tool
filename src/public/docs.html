@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internal Tool — API Documentation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        :root {
+        /* ─── Dark Theme (default) ─── */
+        [data-theme="dark"] {
             --bg: #0b0d11;
             --bg-card: #12151c;
             --bg-code: #0d1017;
@@ -28,11 +38,45 @@
             --purple: #a78bfa;
             --purple-dim: rgba(167, 139, 250, 0.12);
             --cyan: #22d3ee;
-            --radius: 12px;
-            --radius-sm: 8px;
+            --overlay: rgba(0, 0, 0, 0.5);
+            --header-hover: rgba(255, 255, 255, 0.015);
+            --json-key: #7dd3fc;
+            --json-string: #86efac;
+            --json-number: #fbbf24;
+            --json-bool: #c084fc;
         }
 
-        html { scroll-behavior: smooth; }
+        /* ─── Light Theme ─── */
+        [data-theme="light"] {
+            --bg: #f8f9fb;
+            --bg-card: #ffffff;
+            --bg-code: #f1f3f7;
+            --border: #e2e5eb;
+            --border-hover: #cdd1d9;
+            --text: #1a202c;
+            --text-dim: #4a5568;
+            --text-muted: #8892a4;
+            --accent: #4f6ef7;
+            --accent-dim: rgba(79, 110, 247, 0.1);
+            --green: #0d9668;
+            --green-dim: rgba(13, 150, 104, 0.08);
+            --amber: #b45309;
+            --amber-dim: rgba(180, 83, 9, 0.07);
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --purple-dim: rgba(124, 58, 237, 0.08);
+            --cyan: #0891b2;
+            --overlay: rgba(0, 0, 0, 0.2);
+            --header-hover: rgba(0, 0, 0, 0.02);
+            --json-key: #0369a1;
+            --json-string: #15803d;
+            --json-number: #b45309;
+            --json-bool: #7c3aed;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -40,13 +84,27 @@
             color: var(--text);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            transition: background 0.25s ease, color 0.25s ease;
         }
 
         /* ─── Scrollbar ─── */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
 
         /* ─── Layout ─── */
         .layout {
@@ -65,6 +123,7 @@
             padding: 32px 0;
             background: var(--bg);
             z-index: 10;
+            transition: background 0.25s ease, border-color 0.25s ease;
         }
 
         .sidebar-logo {
@@ -82,7 +141,9 @@
             gap: 10px;
         }
 
-        .sidebar-logo h1 .icon { font-size: 22px; }
+        .sidebar-logo h1 .icon {
+            font-size: 22px;
+        }
 
         .sidebar-logo .version {
             display: inline-block;
@@ -118,7 +179,7 @@
             text-decoration: none;
             font-size: 13.5px;
             font-weight: 450;
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             transition: all 0.15s ease;
         }
 
@@ -135,8 +196,71 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        .badge-get { color: var(--green); background: var(--green-dim); }
-        .badge-post { color: var(--accent); background: var(--accent-dim); }
+        .badge-get {
+            color: var(--green);
+            background: var(--green-dim);
+        }
+
+        .badge-post {
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        /* ─── Theme Toggle ─── */
+        .theme-toggle-wrap {
+            padding: 16px 24px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 12px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-dim);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .theme-toggle-track {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: var(--border);
+            position: relative;
+            transition: background 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-track::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--text);
+            top: 3px;
+            left: 3px;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle-track {
+            background: var(--accent-dim);
+        }
+
+        [data-theme="dark"] .theme-toggle-track::after {
+            transform: translateX(20px);
+            background: var(--accent);
+        }
+
+        .theme-toggle-label {
+            font-weight: 500;
+        }
+
+        .theme-icon {
+            font-size: 16px;
+        }
 
         /* ─── Content ─── */
         .content {
@@ -156,6 +280,7 @@
             margin-bottom: 12px;
             background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -184,13 +309,40 @@
             color: var(--text-dim);
         }
 
+        /* ─── Base URL Indicator ─── */
+        .base-url-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .base-url-bar .label {
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        .base-url-bar .url {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 13px;
+        }
+
         /* ─── Section ─── */
         section {
             margin-bottom: 48px;
             scroll-margin-top: 32px;
         }
 
-        section > h3 {
+        section>h3 {
             font-size: 20px;
             font-weight: 600;
             letter-spacing: -0.02em;
@@ -203,14 +355,16 @@
         /* ─── Endpoint Card ─── */
         .endpoint {
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: 12px;
             overflow: hidden;
             margin-bottom: 20px;
             background: var(--bg-card);
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, background 0.25s ease;
         }
 
-        .endpoint:hover { border-color: var(--border-hover); }
+        .endpoint:hover {
+            border-color: var(--border-hover);
+        }
 
         .endpoint-header {
             display: flex;
@@ -221,7 +375,9 @@
             user-select: none;
         }
 
-        .endpoint-header:hover { background: rgba(255,255,255,0.015); }
+        .endpoint-header:hover {
+            background: var(--header-hover);
+        }
 
         .method {
             font-family: 'JetBrains Mono', monospace;
@@ -233,8 +389,15 @@
             text-align: center;
         }
 
-        .method-get { color: var(--green); background: var(--green-dim); }
-        .method-post { color: var(--accent); background: var(--accent-dim); }
+        .method-get {
+            color: var(--green);
+            background: var(--green-dim);
+        }
+
+        .method-post {
+            color: var(--accent);
+            background: var(--accent-dim);
+        }
 
         .endpoint-path {
             font-family: 'JetBrains Mono', monospace;
@@ -256,7 +419,9 @@
             margin-left: 8px;
         }
 
-        .endpoint.open .endpoint-chevron { transform: rotate(90deg); }
+        .endpoint.open .endpoint-chevron {
+            transform: rotate(90deg);
+        }
 
         .endpoint-body {
             display: none;
@@ -264,7 +429,9 @@
             border-top: 1px solid var(--border);
         }
 
-        .endpoint.open .endpoint-body { display: block; }
+        .endpoint.open .endpoint-body {
+            display: block;
+        }
 
         /* ─── Params Table ─── */
         .params-title {
@@ -295,11 +462,13 @@
 
         .params-table td {
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(30, 35, 48, 0.5);
+            border-bottom: 1px solid var(--border);
             vertical-align: top;
         }
 
-        .params-table tr:last-child td { border-bottom: none; }
+        .params-table tr:last-child td {
+            border-bottom: none;
+        }
 
         .param-name {
             font-family: 'JetBrains Mono', monospace;
@@ -331,13 +500,14 @@
         .code-block pre {
             background: var(--bg-code);
             border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             padding: 16px 20px;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 12.5px;
             line-height: 1.8;
             color: var(--text-dim);
+            transition: background 0.25s ease, border-color 0.25s ease;
         }
 
         .code-block .copy-btn {
@@ -356,51 +526,71 @@
             opacity: 0;
         }
 
-        .code-block:hover .copy-btn { opacity: 1; }
-        .code-block .copy-btn:hover { color: var(--text); border-color: var(--border-hover); }
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
 
-        .code-label {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-            margin-bottom: 6px;
+        .code-block .copy-btn:hover {
+            color: var(--text);
+            border-color: var(--border-hover);
         }
 
         /* ─── Response Example ─── */
         .response-block pre {
             background: var(--bg-code);
             border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             padding: 16px 20px;
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 12.5px;
             line-height: 1.7;
+            transition: background 0.25s ease, border-color 0.25s ease;
         }
 
-        .json-key { color: #7dd3fc; }
-        .json-string { color: #86efac; }
-        .json-number { color: #fbbf24; }
-        .json-bool { color: #c084fc; }
+        .json-key {
+            color: var(--json-key);
+        }
+
+        .json-string {
+            color: var(--json-string);
+        }
+
+        .json-number {
+            color: var(--json-number);
+        }
+
+        .json-bool {
+            color: var(--json-bool);
+        }
 
         /* ─── Info Block ─── */
         .info-block {
             display: flex;
             gap: 12px;
             padding: 14px 16px;
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             font-size: 13px;
             color: var(--text-dim);
             margin: 12px 0;
             line-height: 1.6;
         }
 
-        .info-block.tip { background: var(--green-dim); border-left: 3px solid var(--green); }
-        .info-block.warn { background: var(--amber-dim); border-left: 3px solid var(--amber); }
+        .info-block.tip {
+            background: var(--green-dim);
+            border-left: 3px solid var(--green);
+        }
 
-        .info-block .info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+        .info-block.warn {
+            background: var(--amber-dim);
+            border-left: 3px solid var(--amber);
+        }
+
+        .info-block .info-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
 
         /* ─── Formats Grid ─── */
         .formats-grid {
@@ -413,8 +603,9 @@
         .format-card {
             padding: 20px;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: 12px;
             background: var(--bg-card);
+            transition: background 0.25s ease, border-color 0.25s ease;
         }
 
         .format-card h4 {
@@ -475,14 +666,20 @@
             font-size: 12.5px;
             background: var(--bg-code);
             border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             padding: 12px 16px;
             margin-top: 8px;
             color: var(--text-dim);
+            transition: background 0.25s ease, border-color 0.25s ease;
         }
 
-        .n8n-config .cfg-key { color: var(--text-muted); }
-        .n8n-config .cfg-val { color: var(--cyan); }
+        .n8n-config .cfg-key {
+            color: var(--text-muted);
+        }
+
+        .n8n-config .cfg-val {
+            color: var(--cyan);
+        }
 
         /* ─── Error Table ─── */
         .error-table {
@@ -504,10 +701,12 @@
 
         .error-table td {
             padding: 10px 14px;
-            border-bottom: 1px solid rgba(30, 35, 48, 0.5);
+            border-bottom: 1px solid var(--border);
         }
 
-        .error-table tr:last-child td { border-bottom: none; }
+        .error-table tr:last-child td {
+            border-bottom: none;
+        }
 
         .status-code {
             font-family: 'JetBrains Mono', monospace;
@@ -515,8 +714,13 @@
             font-size: 13px;
         }
 
-        .status-4xx { color: var(--amber); }
-        .status-5xx { color: var(--red); }
+        .status-4xx {
+            color: var(--amber);
+        }
+
+        .status-5xx {
+            color: var(--red);
+        }
 
         /* ─── Footer ─── */
         .footer {
@@ -538,11 +742,22 @@
             padding: 12px 20px;
             align-items: center;
             justify-content: space-between;
+            transition: background 0.25s ease;
         }
 
-        .mobile-header h1 { font-size: 16px; font-weight: 700; }
+        .mobile-header h1 {
+            font-size: 16px;
+            font-weight: 700;
+        }
 
-        .hamburger {
+        .mobile-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hamburger,
+        .mobile-theme-btn {
             background: none;
             border: none;
             color: var(--text);
@@ -552,7 +767,10 @@
         }
 
         @media (max-width: 768px) {
-            .layout { grid-template-columns: 1fr; }
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
             .sidebar {
                 position: fixed;
                 left: -280px;
@@ -560,160 +778,204 @@
                 transition: left 0.25s ease;
                 border-right: 1px solid var(--border);
             }
-            .sidebar.open { left: 0; }
+
+            .sidebar.open {
+                left: 0;
+            }
+
             .sidebar-overlay {
                 display: none;
                 position: fixed;
                 inset: 0;
-                background: rgba(0,0,0,0.5);
+                background: var(--overlay);
                 z-index: 9;
             }
-            .sidebar-overlay.open { display: block; }
-            .mobile-header { display: flex; }
-            .content { padding: 24px 20px 60px; }
-            .formats-grid { grid-template-columns: 1fr; }
-            .endpoint-desc { display: none; }
+
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            .content {
+                padding: 24px 20px 60px;
+            }
+
+            .formats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .endpoint-desc {
+                display: none;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<!-- Mobile Header -->
-<div class="mobile-header">
-    <h1>🛠️ Internal Tool</h1>
-    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-</div>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<div class="layout">
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
-            <h1><span class="icon">🛠️</span> Internal Tool</h1>
-            <span class="version">v1.0.0</span>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <h1>🛠️ Internal Tool</h1>
+        <div class="mobile-header-actions">
+            <button class="mobile-theme-btn" onclick="toggleTheme()" aria-label="Toggle theme"
+                id="mobileThemeBtn">🌙</button>
+            <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">☰</button>
         </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Getting Started</div>
-            <a href="#overview">Overview</a>
-            <a href="#formats">Supported Formats</a>
-        </div>
-
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Endpoints</div>
-            <a href="#health"><span class="nav-badge badge-get">GET</span> /health</a>
-            <a href="#check-single"><span class="nav-badge badge-get">GET</span> /check</a>
-            <a href="#check-bulk"><span class="nav-badge badge-post">POST</span> /check</a>
-            <a href="#convert"><span class="nav-badge badge-post">POST</span> /convert</a>
-            <a href="#compress"><span class="nav-badge badge-post">POST</span> /compress</a>
-        </div>
-
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Integration</div>
-            <a href="#n8n">n8n Setup</a>
-            <a href="#errors">Error Responses</a>
-        </div>
-    </nav>
-
-    <!-- Content -->
-    <main class="content">
-
-        <!-- Hero -->
-        <div class="hero" id="overview">
-            <h2>API Documentation</h2>
-            <p>Unified internal utility microservice — URL checker + image conversion & compression. Built for n8n automation workflows.</p>
-            <div class="hero-badges">
-                <span class="hero-badge">⚡ Fastify</span>
-                <span class="hero-badge">🔷 TypeScript</span>
-                <span class="hero-badge">🖼️ Sharp</span>
-                <span class="hero-badge">🐳 Docker Ready</span>
+    <div class="layout">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <h1><span class="icon">🛠️</span> Internal Tool</h1>
+                <span class="version">v1.0.0</span>
             </div>
-        </div>
 
-        <!-- Supported Formats -->
-        <section id="formats">
-            <h3>🖼️ Supported Formats</h3>
-            <div class="formats-grid">
-                <div class="format-card">
-                    <h4>📥 Input (Upload)</h4>
-                    <span class="format-tag">JPEG</span>
-                    <span class="format-tag">PNG</span>
-                    <span class="format-tag">WebP</span>
-                    <span class="format-tag">GIF</span>
-                    <span class="format-tag">TIFF</span>
-                    <span class="format-tag">AVIF</span>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Getting Started</div>
+                <a href="#overview">Overview</a>
+                <a href="#formats">Supported Formats</a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Endpoints</div>
+                <a href="#health"><span class="nav-badge badge-get">GET</span> /health</a>
+                <a href="#check-single"><span class="nav-badge badge-get">GET</span> /check</a>
+                <a href="#check-bulk"><span class="nav-badge badge-post">POST</span> /check</a>
+                <a href="#convert"><span class="nav-badge badge-post">POST</span> /convert</a>
+                <a href="#compress"><span class="nav-badge badge-post">POST</span> /compress</a>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Integration</div>
+                <a href="#n8n">n8n Setup</a>
+                <a href="#errors">Error Responses</a>
+            </div>
+
+            <div class="theme-toggle-wrap">
+                <label class="theme-toggle" onclick="toggleTheme()">
+                    <div class="theme-toggle-track" id="themeTrack"></div>
+                    <span class="theme-icon" id="themeIcon">🌙</span>
+                    <span class="theme-toggle-label" id="themeLabel">Dark Mode</span>
+                </label>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main class="content">
+
+            <!-- Hero -->
+            <div class="hero" id="overview">
+                <h2>API Documentation</h2>
+                <p>Unified internal utility microservice — URL checker + image conversion & compression. Built for n8n
+                    automation workflows.</p>
+                <div class="hero-badges">
+                    <span class="hero-badge">⚡ Fastify</span>
+                    <span class="hero-badge">🔷 TypeScript</span>
+                    <span class="hero-badge">🖼️ Sharp</span>
+                    <span class="hero-badge">🐳 Docker Ready</span>
                 </div>
-                <div class="format-card">
-                    <h4>📤 Output (Result)</h4>
-                    <span class="format-tag">WebP</span>
-                    <span class="format-tag">JPEG</span>
-                    <span class="format-tag">PNG</span>
+                <div class="base-url-bar">
+                    <span class="label">Base URL</span>
+                    <span class="url" id="baseUrlDisplay"></span>
                 </div>
             </div>
-        </section>
 
-        <!-- Health -->
-        <section id="health">
-            <h3>📡 Endpoints</h3>
-
-            <div class="endpoint open">
-                <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                    <span class="method method-get">GET</span>
-                    <span class="endpoint-path">/health</span>
-                    <span class="endpoint-desc">Health check</span>
-                    <span class="endpoint-chevron">▶</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="params-title">curl</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl http://localhost:3000/health</pre>
+            <!-- Supported Formats -->
+            <section id="formats">
+                <h3>🖼️ Supported Formats</h3>
+                <div class="formats-grid">
+                    <div class="format-card">
+                        <h4>📥 Input (Upload)</h4>
+                        <span class="format-tag">JPEG</span>
+                        <span class="format-tag">PNG</span>
+                        <span class="format-tag">WebP</span>
+                        <span class="format-tag">GIF</span>
+                        <span class="format-tag">TIFF</span>
+                        <span class="format-tag">AVIF</span>
                     </div>
+                    <div class="format-card">
+                        <h4>📤 Output (Result)</h4>
+                        <span class="format-tag">WebP</span>
+                        <span class="format-tag">JPEG</span>
+                        <span class="format-tag">PNG</span>
+                    </div>
+                </div>
+            </section>
 
-                    <p class="params-title">Response</p>
-                    <div class="response-block">
-                        <pre>{
+            <!-- Health -->
+            <section id="health">
+                <h3>📡 Endpoints</h3>
+
+                <div class="endpoint open">
+                    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/health</span>
+                        <span class="endpoint-desc">Health check</span>
+                        <span class="endpoint-chevron">▶</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <p class="params-title">curl</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl {{BASE_URL}}/health</pre>
+                        </div>
+
+                        <p class="params-title">Response</p>
+                        <div class="response-block">
+                            <pre>{
   <span class="json-key">"status"</span>: <span class="json-string">"ok"</span>,
   <span class="json-key">"uptime"</span>: <span class="json-number">123.45</span>,
   <span class="json-key">"timestamp"</span>: <span class="json-string">"2026-03-03T08:00:00.000Z"</span>
 }</pre>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Check Single -->
-        <section id="check-single">
-            <div class="endpoint">
-                <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                    <span class="method method-get">GET</span>
-                    <span class="endpoint-path">/check?url={url}</span>
-                    <span class="endpoint-desc">Check single URL</span>
-                    <span class="endpoint-chevron">▶</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="params-title">Query Parameters</p>
-                    <table class="params-table">
-                        <thead><tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="param-name">url</span></td>
-                                <td><span class="param-type">string</span></td>
-                                <td>✅</td>
-                                <td>Full URL to check (include https://)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <p class="params-title">curl</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl "http://localhost:3000/check?url=https://google.com"</pre>
+            <!-- Check Single -->
+            <section id="check-single">
+                <div class="endpoint">
+                    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                        <span class="method method-get">GET</span>
+                        <span class="endpoint-path">/check?url={url}</span>
+                        <span class="endpoint-desc">Check single URL</span>
+                        <span class="endpoint-chevron">▶</span>
                     </div>
+                    <div class="endpoint-body">
+                        <p class="params-title">Query Parameters</p>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="param-name">url</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td>✅</td>
+                                    <td>Full URL to check (include https://)</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <p class="params-title">Response</p>
-                    <div class="response-block">
-                        <pre>{
+                        <p class="params-title">curl</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl "{{BASE_URL}}/check?url=https://google.com"</pre>
+                        </div>
+
+                        <p class="params-title">Response</p>
+                        <div class="response-block">
+                            <pre>{
   <span class="json-key">"url"</span>: <span class="json-string">"https://google.com"</span>,
   <span class="json-key">"status"</span>: <span class="json-number">200</span>,
   <span class="json-key">"ok"</span>: <span class="json-bool">true</span>,
@@ -721,42 +983,42 @@
   <span class="json-key">"finalUrl"</span>: <span class="json-string">"https://www.google.com/"</span>,
   <span class="json-key">"responseTime"</span>: <span class="json-number">356</span>
 }</pre>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Check Bulk -->
-        <section id="check-bulk">
-            <div class="endpoint">
-                <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                    <span class="method method-post">POST</span>
-                    <span class="endpoint-path">/check</span>
-                    <span class="endpoint-desc">Check multiple URLs (max 100)</span>
-                    <span class="endpoint-chevron">▶</span>
-                </div>
-                <div class="endpoint-body">
-                    <p class="params-title">Request Body — JSON</p>
-                    <div class="response-block">
-                        <pre>{
+            <!-- Check Bulk -->
+            <section id="check-bulk">
+                <div class="endpoint">
+                    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/check</span>
+                        <span class="endpoint-desc">Check multiple URLs (max 100)</span>
+                        <span class="endpoint-chevron">▶</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <p class="params-title">Request Body — JSON</p>
+                        <div class="response-block">
+                            <pre>{
   <span class="json-key">"urls"</span>: [
     <span class="json-string">"https://google.com"</span>,
     <span class="json-string">"https://github.com"</span>
   ]
 }</pre>
-                    </div>
+                        </div>
 
-                    <p class="params-title">curl</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl -X POST http://localhost:3000/check \
+                        <p class="params-title">curl</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl -X POST {{BASE_URL}}/check \
   -H "Content-Type: application/json" \
   -d '{"urls":["https://google.com","https://github.com"]}'</pre>
-                    </div>
+                        </div>
 
-                    <p class="params-title">Response</p>
-                    <div class="response-block">
-                        <pre>[
+                        <p class="params-title">Response</p>
+                        <div class="response-block">
+                            <pre>[
   {
     <span class="json-key">"url"</span>: <span class="json-string">"https://google.com"</span>,
     <span class="json-key">"status"</span>: <span class="json-number">200</span>,
@@ -774,289 +1036,356 @@
     <span class="json-key">"responseTime"</span>: <span class="json-number">412</span>
   }
 ]</pre>
-                    </div>
+                        </div>
 
-                    <div class="info-block tip">
-                        <span class="info-icon">💡</span>
-                        <span>Maximum 100 URLs per request. All URLs are validated before processing.</span>
+                        <div class="info-block tip">
+                            <span class="info-icon">💡</span>
+                            <span>Maximum 100 URLs per request. All URLs are validated before processing.</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Convert -->
-        <section id="convert">
-            <div class="endpoint">
-                <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                    <span class="method method-post">POST</span>
-                    <span class="endpoint-path">/convert</span>
-                    <span class="endpoint-desc">Convert image format</span>
-                    <span class="endpoint-chevron">▶</span>
-                </div>
-                <div class="endpoint-body">
-                    <div class="info-block warn">
-                        <span class="info-icon">📎</span>
-                        <span>Request must be <strong>multipart/form-data</strong> with the file field named <code>file</code>.</span>
+            <!-- Convert -->
+            <section id="convert">
+                <div class="endpoint">
+                    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/convert</span>
+                        <span class="endpoint-desc">Convert image format</span>
+                        <span class="endpoint-chevron">▶</span>
                     </div>
+                    <div class="endpoint-body">
+                        <div class="info-block warn">
+                            <span class="info-icon">📎</span>
+                            <span>Request must be <strong>multipart/form-data</strong> with the file field named
+                                <code>file</code>.</span>
+                        </div>
 
-                    <p class="params-title">Query Parameters</p>
-                    <table class="params-table">
-                        <thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="param-name">format</span></td>
-                                <td><span class="param-type">string</span></td>
-                                <td><span class="param-default">webp</span></td>
-                                <td>Output format: <code>webp</code>, <code>jpg</code>, <code>png</code></td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">quality</span></td>
-                                <td><span class="param-type">int</span></td>
-                                <td><span class="param-default">80</span></td>
-                                <td>Quality 1–100</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">width</span></td>
-                                <td><span class="param-type">int</span></td>
-                                <td><span class="param-default">—</span></td>
-                                <td>Resize width in pixels</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">height</span></td>
-                                <td><span class="param-type">int</span></td>
-                                <td><span class="param-default">—</span></td>
-                                <td>Resize height in pixels</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">fit</span></td>
-                                <td><span class="param-type">string</span></td>
-                                <td><span class="param-default">cover</span></td>
-                                <td><code>cover</code>, <code>contain</code>, <code>inside</code>, <code>fill</code>, <code>outside</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <p class="params-title">Query Parameters</p>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="param-name">format</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td><span class="param-default">webp</span></td>
+                                    <td>Output format: <code>webp</code>, <code>jpg</code>, <code>png</code></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">quality</span></td>
+                                    <td><span class="param-type">int</span></td>
+                                    <td><span class="param-default">80</span></td>
+                                    <td>Quality 1–100</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">width</span></td>
+                                    <td><span class="param-type">int</span></td>
+                                    <td><span class="param-default">—</span></td>
+                                    <td>Resize width in pixels</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">height</span></td>
+                                    <td><span class="param-type">int</span></td>
+                                    <td><span class="param-default">—</span></td>
+                                    <td>Resize height in pixels</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">fit</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td><span class="param-default">cover</span></td>
+                                    <td><code>cover</code>, <code>contain</code>, <code>inside</code>,
+                                        <code>fill</code>, <code>outside</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <p class="params-title">curl — Basic Convert</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl -X POST "http://localhost:3000/convert?format=webp&quality=80" \
+                        <p class="params-title">curl — Basic Convert</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl -X POST "{{BASE_URL}}/convert?format=webp&quality=80" \
   -F "file=@input.png" \
   -o output.webp</pre>
-                    </div>
+                        </div>
 
-                    <p class="params-title">curl — Convert + Resize</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl -X POST "http://localhost:3000/convert?format=png&width=400&height=300&fit=cover" \
+                        <p class="params-title">curl — Convert + Resize</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl -X POST "{{BASE_URL}}/convert?format=png&width=400&height=300&fit=cover" \
   -F "file=@photo.jpg" \
   -o resized.png</pre>
-                    </div>
+                        </div>
 
-                    <div class="info-block tip">
-                        <span class="info-icon">💡</span>
-                        <span>Response is the binary image with appropriate <code>Content-Type</code> header. Use <code>-o filename</code> with curl to save.</span>
+                        <div class="info-block tip">
+                            <span class="info-icon">💡</span>
+                            <span>Response is the binary image with appropriate <code>Content-Type</code> header. Use
+                                <code>-o filename</code> with curl to save.</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Compress -->
-        <section id="compress">
-            <div class="endpoint">
-                <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                    <span class="method method-post">POST</span>
-                    <span class="endpoint-path">/compress</span>
-                    <span class="endpoint-desc">Compress image</span>
-                    <span class="endpoint-chevron">▶</span>
-                </div>
-                <div class="endpoint-body">
-                    <div class="info-block warn">
-                        <span class="info-icon">📎</span>
-                        <span>Request must be <strong>multipart/form-data</strong> with the file field named <code>file</code>.</span>
+            <!-- Compress -->
+            <section id="compress">
+                <div class="endpoint">
+                    <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                        <span class="method method-post">POST</span>
+                        <span class="endpoint-path">/compress</span>
+                        <span class="endpoint-desc">Compress image</span>
+                        <span class="endpoint-chevron">▶</span>
                     </div>
+                    <div class="endpoint-body">
+                        <div class="info-block warn">
+                            <span class="info-icon">📎</span>
+                            <span>Request must be <strong>multipart/form-data</strong> with the file field named
+                                <code>file</code>.</span>
+                        </div>
 
-                    <p class="params-title">Query Parameters</p>
-                    <table class="params-table">
-                        <thead><tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="param-name">quality</span></td>
-                                <td><span class="param-type">int</span></td>
-                                <td><span class="param-default">75</span></td>
-                                <td>Compression quality 1–100</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">lossless</span></td>
-                                <td><span class="param-type">bool</span></td>
-                                <td><span class="param-default">false</span></td>
-                                <td>Lossless compression (WebP/PNG)</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">effort</span></td>
-                                <td><span class="param-type">int</span></td>
-                                <td><span class="param-default">4</span></td>
-                                <td>Compression effort 0–6 (higher = slower but smaller)</td>
-                            </tr>
-                            <tr>
-                                <td><span class="param-name">format</span></td>
-                                <td><span class="param-type">string</span></td>
-                                <td><span class="param-default">—</span></td>
-                                <td>Force output format (default: keep original)</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <p class="params-title">Query Parameters</p>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Param</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="param-name">quality</span></td>
+                                    <td><span class="param-type">int</span></td>
+                                    <td><span class="param-default">75</span></td>
+                                    <td>Compression quality 1–100</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">lossless</span></td>
+                                    <td><span class="param-type">bool</span></td>
+                                    <td><span class="param-default">false</span></td>
+                                    <td>Lossless compression (WebP/PNG)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">effort</span></td>
+                                    <td><span class="param-type">int</span></td>
+                                    <td><span class="param-default">4</span></td>
+                                    <td>Compression effort 0–6 (higher = slower but smaller)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">format</span></td>
+                                    <td><span class="param-type">string</span></td>
+                                    <td><span class="param-default">—</span></td>
+                                    <td>Force output format (default: keep original)</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                    <p class="params-title">curl — Compress JPEG</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl -X POST "http://localhost:3000/compress?quality=60" \
+                        <p class="params-title">curl — Compress JPEG</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl -X POST "{{BASE_URL}}/compress?quality=60" \
   -F "file=@photo.jpg" \
   -o compressed.jpg</pre>
-                    </div>
+                        </div>
 
-                    <p class="params-title">curl — Lossless WebP</p>
-                    <div class="code-block">
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                        <pre>curl -X POST "http://localhost:3000/compress?format=webp&lossless=true&effort=6" \
+                        <p class="params-title">curl — Lossless WebP</p>
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                            <pre class="curl-example">curl -X POST "{{BASE_URL}}/compress?format=webp&lossless=true&effort=6" \
   -F "file=@input.png" \
   -o output.webp</pre>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- n8n Integration -->
-        <section id="n8n">
-            <h3>🔗 n8n Integration</h3>
+            <!-- n8n Integration -->
+            <section id="n8n">
+                <h3>🔗 n8n Integration</h3>
 
-            <p style="color: var(--text-dim); margin-bottom: 20px;">
-                Use the <strong>HTTP Request</strong> node in n8n to connect to internal-tool.
-            </p>
+                <p style="color: var(--text-dim); margin-bottom: 20px;">
+                    Use the <strong>HTTP Request</strong> node in n8n to connect to internal-tool.
+                </p>
 
-            <div class="n8n-step">
-                <span class="n8n-step-num">1</span>
-                <div class="n8n-step-content">
-                    <h4>URL Check</h4>
-                    <p>Check a URL from your workflow data</p>
-                    <div class="n8n-config">
-                        <span class="cfg-key">Method:</span> <span class="cfg-val">GET</span><br>
-                        <span class="cfg-key">URL:</span> <span class="cfg-val">http://internal-tool:3000/check?url={{ $json.url }}</span>
+                <div class="n8n-step">
+                    <span class="n8n-step-num">1</span>
+                    <div class="n8n-step-content">
+                        <h4>URL Check</h4>
+                        <p>Check a URL from your workflow data</p>
+                        <div class="n8n-config">
+                            <span class="cfg-key">Method:</span> <span class="cfg-val">GET</span><br>
+                            <span class="cfg-key">URL:</span> <span
+                                class="cfg-val">http://internal-tool:3000/check?url={{ $json.url }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="n8n-step">
-                <span class="n8n-step-num">2</span>
-                <div class="n8n-step-content">
-                    <h4>Convert Image</h4>
-                    <p>Convert a binary image to WebP</p>
-                    <div class="n8n-config">
-                        <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
-                        <span class="cfg-key">URL:</span> <span class="cfg-val">http://internal-tool:3000/convert?format=webp&quality=80</span><br>
-                        <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
-                        <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
-                        <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
+                <div class="n8n-step">
+                    <span class="n8n-step-num">2</span>
+                    <div class="n8n-step-content">
+                        <h4>Convert Image</h4>
+                        <p>Convert a binary image to WebP</p>
+                        <div class="n8n-config">
+                            <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
+                            <span class="cfg-key">URL:</span> <span
+                                class="cfg-val">http://internal-tool:3000/convert?format=webp&quality=80</span><br>
+                            <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
+                            <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
+                            <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="n8n-step">
-                <span class="n8n-step-num">3</span>
-                <div class="n8n-step-content">
-                    <h4>Compress Image</h4>
-                    <p>Compress a binary image with quality control</p>
-                    <div class="n8n-config">
-                        <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
-                        <span class="cfg-key">URL:</span> <span class="cfg-val">http://internal-tool:3000/compress?quality=60</span><br>
-                        <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
-                        <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
-                        <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
+                <div class="n8n-step">
+                    <span class="n8n-step-num">3</span>
+                    <div class="n8n-step-content">
+                        <h4>Compress Image</h4>
+                        <p>Compress a binary image with quality control</p>
+                        <div class="n8n-config">
+                            <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
+                            <span class="cfg-key">URL:</span> <span
+                                class="cfg-val">http://internal-tool:3000/compress?quality=60</span><br>
+                            <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
+                            <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
+                            <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="info-block tip">
-                <span class="info-icon">💡</span>
-                <span>When running both n8n and internal-tool in Docker, use the container name <code>internal-tool</code> as hostname. Add both services to the same Docker network.</span>
-            </div>
-        </section>
+                <div class="info-block tip">
+                    <span class="info-icon">💡</span>
+                    <span>When running both n8n and internal-tool in Docker, use the container name
+                        <code>internal-tool</code> as hostname. Add both services to the same Docker network.</span>
+                </div>
+            </section>
 
-        <!-- Errors -->
-        <section id="errors">
-            <h3>⚠️ Error Responses</h3>
+            <!-- Errors -->
+            <section id="errors">
+                <h3>⚠️ Error Responses</h3>
 
-            <p style="color: var(--text-dim); margin-bottom: 16px;">All errors return JSON with a consistent structure:</p>
+                <p style="color: var(--text-dim); margin-bottom: 16px;">All errors return JSON with a consistent
+                    structure:</p>
 
-            <div class="response-block" style="margin-bottom: 20px;">
-                <pre>{
+                <div class="response-block" style="margin-bottom: 20px;">
+                    <pre>{
   <span class="json-key">"error"</span>: <span class="json-string">"ValidationError"</span>,
   <span class="json-key">"message"</span>: <span class="json-string">"Missing 'url' query parameter"</span>,
   <span class="json-key">"statusCode"</span>: <span class="json-number">400</span>,
   <span class="json-key">"requestId"</span>: <span class="json-string">"a1b2c3d4-e5f6-7890"</span>
 }</pre>
+                </div>
+
+                <table class="error-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Meaning</th>
+                            <th>Common Cause</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-code status-4xx">400</span></td>
+                            <td>Bad Request</td>
+                            <td>Invalid parameters, missing file, or bad URL format</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code status-4xx">413</span></td>
+                            <td>Payload Too Large</td>
+                            <td>Uploaded file exceeds MAX_FILE_SIZE (default 10MB)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code status-4xx">415</span></td>
+                            <td>Unsupported Format</td>
+                            <td>Image format not supported by Sharp</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code status-5xx">500</span></td>
+                            <td>Internal Error</td>
+                            <td>Unexpected server error</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <div class="footer">
+                Internal Tool v1.0.0 — Fastify + TypeScript + Sharp · MIT License
             </div>
+        </main>
+    </div>
 
-            <table class="error-table">
-                <thead><tr><th>Status</th><th>Meaning</th><th>Common Cause</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td><span class="status-code status-4xx">400</span></td>
-                        <td>Bad Request</td>
-                        <td>Invalid parameters, missing file, or bad URL format</td>
-                    </tr>
-                    <tr>
-                        <td><span class="status-code status-4xx">413</span></td>
-                        <td>Payload Too Large</td>
-                        <td>Uploaded file exceeds MAX_FILE_SIZE (default 10MB)</td>
-                    </tr>
-                    <tr>
-                        <td><span class="status-code status-4xx">415</span></td>
-                        <td>Unsupported Format</td>
-                        <td>Image format not supported by Sharp</td>
-                    </tr>
-                    <tr>
-                        <td><span class="status-code status-5xx">500</span></td>
-                        <td>Internal Error</td>
-                        <td>Unexpected server error</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+    <script>
+        // ─── Dynamic Base URL ───
+        const BASE_URL = window.location.origin;
 
-        <div class="footer">
-            Internal Tool v1.0.0 — Fastify + TypeScript + Sharp · MIT License
-        </div>
-    </main>
-</div>
-
-<script>
-    function toggleEndpoint(header) {
-        header.closest('.endpoint').classList.toggle('open');
-    }
-
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('open');
-        document.getElementById('sidebarOverlay').classList.toggle('open');
-    }
-
-    async function copyCode(btn) {
-        const code = btn.nextElementSibling.textContent;
-        try {
-            await navigator.clipboard.writeText(code);
-            btn.textContent = 'Copied!';
-            setTimeout(() => btn.textContent = 'Copy', 1500);
-        } catch {
-            btn.textContent = 'Failed';
-            setTimeout(() => btn.textContent = 'Copy', 1500);
+        function replaceBaseUrls() {
+            document.getElementById('baseUrlDisplay').textContent = BASE_URL;
+            document.querySelectorAll('.curl-example').forEach(pre => {
+                pre.textContent = pre.textContent.replace(/\{\{BASE_URL\}\}/g, BASE_URL);
+            });
         }
-    }
 
-    // Close sidebar on nav click (mobile)
-    document.querySelectorAll('.sidebar a').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) toggleSidebar();
+        // ─── Theme Toggle ───
+        function getStoredTheme() {
+            return localStorage.getItem('internal-tool-theme') || 'dark';
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const icon = theme === 'dark' ? '🌙' : '☀️';
+            const label = theme === 'dark' ? 'Dark Mode' : 'Light Mode';
+            document.getElementById('themeIcon').textContent = icon;
+            document.getElementById('themeLabel').textContent = label;
+            document.getElementById('mobileThemeBtn').textContent = icon;
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('internal-tool-theme', next);
+            applyTheme(next);
+        }
+
+        // ─── Endpoint Toggle ───
+        function toggleEndpoint(header) {
+            header.closest('.endpoint').classList.toggle('open');
+        }
+
+        // ─── Sidebar Toggle (Mobile) ───
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+
+        // ─── Copy Code ───
+        async function copyCode(btn) {
+            const code = btn.nextElementSibling.textContent;
+            try {
+                await navigator.clipboard.writeText(code);
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 1500);
+            } catch {
+                btn.textContent = 'Failed';
+                setTimeout(() => btn.textContent = 'Copy', 1500);
+            }
+        }
+
+        // ─── Init ───
+        applyTheme(getStoredTheme());
+        replaceBaseUrls();
+
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) toggleSidebar();
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>

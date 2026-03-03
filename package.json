@@ -1,0 +1,23 @@
+{
+  "name": "internal-tool",
+  "version": "1.0.0",
+  "description": "Internal utility microservice — URL checker + image conversion/compression for n8n workflows",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": ["url-checker", "image", "conversion", "compression", "webp", "sharp", "microservice", "n8n"],
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^5.3.3",
+    "@fastify/multipart": "^9.0.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "@types/node": "^22.13.5",
+    "tsx": "^4.19.3"
+  }
+}

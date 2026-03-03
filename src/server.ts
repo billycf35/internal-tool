@@ -7,6 +7,7 @@ import { convertRoutes } from './routes/convert.js';
 import { compressRoutes } from './routes/compress.js';
 import { healthRoutes } from './routes/health.js';
 import { urlCheckRoutes } from './routes/urlCheck.js';
+import { docsRoutes } from './routes/docs.js';
 
 async function buildApp() {
     const app = Fastify({
@@ -35,6 +36,7 @@ async function buildApp() {
     await app.register(convertRoutes);
     await app.register(compressRoutes);
     await app.register(urlCheckRoutes);
+    await app.register(docsRoutes);
 
     return app;
 }

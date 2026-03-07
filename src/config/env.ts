@@ -1,6 +1,7 @@
 export interface EnvConfig {
     PORT: number;
     HOST: string;
+    BASE_URL: string;
     MAX_FILE_SIZE: number;
     REQUEST_TIMEOUT: number;
     URL_CHECK_TIMEOUT: number;
@@ -21,6 +22,7 @@ export function loadConfig(): EnvConfig {
     return {
         PORT: parseIntEnv('PORT', 3000),
         HOST: process.env.HOST || '0.0.0.0',
+        BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
         MAX_FILE_SIZE: parseIntEnv('MAX_FILE_SIZE', 10 * 1024 * 1024), // 10MB
         REQUEST_TIMEOUT: parseIntEnv('REQUEST_TIMEOUT', 30000), // 30s
         URL_CHECK_TIMEOUT: parseIntEnv('URL_CHECK_TIMEOUT', 15000), // 15s

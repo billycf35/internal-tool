@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Fastify from 'fastify';
 import multipart from '@fastify/multipart';
 import { config } from './config/env.js';

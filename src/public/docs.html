@@ -1102,7 +1102,8 @@
                                     <td><span class="param-type">string</span></td>
                                     <td><span class="param-default">cover</span></td>
                                     <td><code>cover</code>, <code>contain</code>, <code>inside</code>,
-                                        <code>fill</code>, <code>outside</code></td>
+                                        <code>fill</code>, <code>outside</code>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1220,8 +1221,8 @@
                         <p>Check a URL from your workflow data</p>
                         <div class="n8n-config">
                             <span class="cfg-key">Method:</span> <span class="cfg-val">GET</span><br>
-                            <span class="cfg-key">URL:</span> <span
-                                class="cfg-val">http://internal-tool:3000/check?url={{ $json.url }}</span>
+                            <span class="cfg-key">URL:</span> <span class="cfg-val">{{BASE_URL}}/check?url={{ $json.url
+                                }}</span>
                         </div>
                     </div>
                 </div>
@@ -1234,7 +1235,7 @@
                         <div class="n8n-config">
                             <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
                             <span class="cfg-key">URL:</span> <span
-                                class="cfg-val">http://internal-tool:3000/convert?format=webp&quality=80</span><br>
+                                class="cfg-val">{{BASE_URL}}/convert?format=webp&quality=80</span><br>
                             <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
                             <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
                             <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
@@ -1250,7 +1251,7 @@
                         <div class="n8n-config">
                             <span class="cfg-key">Method:</span> <span class="cfg-val">POST</span><br>
                             <span class="cfg-key">URL:</span> <span
-                                class="cfg-val">http://internal-tool:3000/compress?quality=60</span><br>
+                                class="cfg-val">{{BASE_URL}}/compress?quality=60</span><br>
                             <span class="cfg-key">Body Type:</span> <span class="cfg-val">Form-Data/Multipart</span><br>
                             <span class="cfg-key">Parameter:</span> <span class="cfg-val">file</span><br>
                             <span class="cfg-key">Input Field:</span> <span class="cfg-val">data</span>
@@ -1321,14 +1322,11 @@
     </div>
 
     <script>
-        // ─── Dynamic Base URL ───
-        const BASE_URL = window.location.origin;
+        // ─── Base URL (injected server-side from .env) ───
+        const BASE_URL = '{{BASE_URL}}';
 
         function replaceBaseUrls() {
             document.getElementById('baseUrlDisplay').textContent = BASE_URL;
-            document.querySelectorAll('.curl-example').forEach(pre => {
-                pre.textContent = pre.textContent.replace(/\{\{BASE_URL\}\}/g, BASE_URL);
-            });
         }
 
         // ─── Theme Toggle ───
